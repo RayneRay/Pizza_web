@@ -16,9 +16,9 @@ Including another URLconf
 """
 
 
-from web1.views import PizzaAPIList, PizzaAPIUpdate, PizzaAPIDelete
+from web1.views import PizzaAPIList, PizzaAPIUpdateDelete
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,6 +26,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/pizzalist/', PizzaAPIList.as_view()),
-    path('api/v1/pizzaupdate/<int:pk>/', PizzaAPIUpdate.as_view()),
-    path('api/v1/pizzadelete/<int:pk>/', PizzaAPIDelete.as_view()),
+    path('api/v1/pizzalist/<int:pk>/', PizzaAPIUpdateDelete.as_view()),
+    path('api/v1/pizza/auth/', include('djoser.urls')),
+    path('api/v1/pizza/rest-auth/', include('rest_framework.urls')),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
